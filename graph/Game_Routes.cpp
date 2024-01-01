@@ -1,74 +1,59 @@
-#include <bits/stdc++.h>
-#define endl "\n"
+#include<bits/stdc++.h>
 using namespace std;
-#define int long long int
-#define watch(x) cout << (#x) << " is " << (x) << "\n"
-#define watch2(x, y) cout << #x << "=" << x << "," << #y << "=" << y << "\n"
- 
-int n, m;
-vector<vector<int>> g;
-vector<int> cnt;
-vector<int> inDegree;
-const int modb = 1e9+7;
- 
-void top_sort()
-{
-	queue<int> q;
-	for(int i = 2; i <= n; ++i)
-	{
-		if(inDegree[i] == 0)
-		{
-			q.push(i);	
-		}
-	}
-	while(!q.empty())
-	{
-		int u = q.front();
-		q.pop();
-		for(auto v: g[u])
-		{
-			--inDegree[v];
-			if(inDegree[v] == 0)
-				q.push(v);
-		}
-	}
-	q.push(1);
-	cnt[1] = 1;
-	while(!q.empty())
-	{
-		int u = q.front();
-		q.pop();
-		for(auto v: g[u])
-		{
-			--inDegree[v];
-			cnt[v] = cnt[v] + cnt[u];
-			cnt[v] %=  modb;
-			if(inDegree[v] == 0)
-				q.push(v);
-		}
-	}
+#define int long long
+#define INT_MAX 1e16
+const int mod=1e9+7;
+void solve() {
+   int n,m;
+   cin>>n>>m;
+   vector<int>adj[n+1];
+   vector<int>indeg(n+1);
+   while(m--){
+    int u,v;
+    cin>>u>>v;
+    adj[u].push_back(v);
+    indeg[v]++;
+   }
+ queue<int>q;
+ for(int i=2;i<=n;i++){
+    if(indeg[i]==0)
+    q.push(i);
+ }
+ while(!q.empty()){
+    int node=q.front();
+    q.pop();
+    if(node==1)break;
+    for(auto it:adj[node]){
+        --indeg[it];
+        if(indeg[it]==0){
+            q.push(it);
+        }
+    }
+ }
+ vector<int>route(n+1);
+ q.push(1);
+ route[1]=1;
+ while(!q.empty()){
+    int node=q.front();
+    q.pop();
+    for(auto it:adj[node]){
+        --indeg[it];
+        if(indeg[it]==0){
+            q.push(it);
+        }
+        
+        route[it]=(route[it]+route[node])%mod;
+        //cout<<route[it]<<" ";
+    }
+ }
+cout<<route[n];
+
+   
 }
- 
- 
-int32_t main()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cin >> n >> m;
-	g.resize(n+1);
-	cnt.resize(n+1);
-	inDegree.resize(n+1);
-	for(int i = 0; i < m; ++i)
-	{
-		int u, v;
-		cin >> u >> v;
-		inDegree[v]++;
-		g[u].push_back(v);
-	}
-	for(int i = 2; i <= n; ++i)
-	{
- 
-	}
-	top_sort();
-	cout << cnt[n];
+
+int32_t main() {
+   
+    solve();
+    cout<<endl;
+    return 0;
 }
