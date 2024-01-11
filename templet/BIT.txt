@@ -1,0 +1,28 @@
+struct BIT{
+    vector<int>bit;
+    int n;
+     BIT(int size){
+        n=size+2;
+       bit.resize(n);
+       
+     }
+     void update(int indx,int val){
+        while(indx<n){
+            bit[indx]+=val;
+            indx+=(indx & (-indx));
+        }
+     }
+     int query(int indx){
+        int sum=0;
+         while(indx>0){
+            sum+=bit[indx];
+            indx-=(indx & (-indx));
+         }
+         return sum;
+     }
+     void build_bit(vector<int>&arr){
+        for(int i=1;i<arr.size();i++){
+           update(i,arr[i]);
+        }
+     }
+};

@@ -67,19 +67,17 @@ void solve() {
         
     }
    }
-//    map<int,int>mp;
-//    for(int i=1;i<=n;i++){
-//     cout<<"node"<<i<<" ->"<<disc[i]<<" "<<low[i]<<"||"<<endl;
-//    }
-//    for(int i=1;i<=n;i++){
-//     mp[low[i]]++;
-//    }
-   if(ans.size()==1){
-    cout<<"YES";
-    return;
+   int size=ans.size();
+   cout<<size<<endl;
+   vector<int>kingdom(n+1);
+   for(int i=0;i<size;i++){
+     for(auto it:ans[i]){
+        kingdom[it]=i+1;
+     }
    }
-   cout<<"NO"<<endl;
-   cout<<ans[0][0]<<" "<<ans[1][0];
+   for(int i=1;i<=n;i++){
+    cout<<kingdom[i]<<" ";
+   }
 }
 
 int32_t main() {

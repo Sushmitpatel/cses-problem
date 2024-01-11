@@ -1,0 +1,125 @@
+struct SegT {
+    vector<int>segTree;
+      SegT(int n){
+        segTree.resize(4*n+7);
+      }
+    void build_tree(vector<int> &arr, int node, int s, int e) {
+        if (e==s) {
+            segTree[node] = arr[s];
+            return;
+        }
+        int mid = (s + e) >> 1;
+        build_tree(arr, 2 * node, s, mid);
+        build_tree(arr, 2 * node + 1, mid + 1, e);
+        segTree[node] = segTree[2 * node] + segTree[2 * node + 1];
+    }
+
+    int query(int node, int l, int h, int s, int e) {
+        if (l > e || h < s)
+            return 0;
+        if (l >= s && h <= e)
+            return segTree[node];
+        int mid = (l + h) >> 1;
+        int left = query(2 * node, l, mid, s, e);
+        int right = query(2 * node + 1, mid + 1, h, s, e);
+        return left + right;
+    }
+
+    void update(int node, int indx, int val, int l, int h) {
+        if (l == h) {
+            segTree[node] += val;
+            return;
+        }
+        int mid = (l + h) >> 1;
+        if (indx <= mid) {
+            update(2 * node, indx, val, l, mid);
+        } else {
+            update(2 * node + 1, indx, val, mid + 1, h);
+        }
+        segTree[node] = segTree[2 * node] + segTree[2 * node + 1];
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                       /* segment tree with vertices*/
+
+    //struct vertex{
+//     int value;
+//     int index;
+// };
+// struct SegT {
+//     vector<vertex>segTree;
+//       SegT(int n){
+//         segTree.resize(4*n+7);
+//       }
+//     void build_tree(vector<vertex> &arr, int node, int s, int e) {
+//         if (e==s) {
+//             segTree[node] = arr[s];
+//             return;
+//         }
+//         int mid = (s + e) >> 1;
+//         build_tree(arr, 2 * node, s, mid);
+//         build_tree(arr, 2 * node + 1, mid + 1, e);
+//         segTree[node].value = max(segTree[2 * node].value , segTree[2 * node + 1].value);
+//     }
+
+//     int query(int node, int l, int h, int s, int e) {
+//         if (l > e || h < s)
+//             return 0;
+//         if (l >= s && h <= e)
+//             return segTree[node].value;
+//         int mid = (l + h) >> 1;
+//         int left = query(2 * node, l, mid, s, e);
+//         int right = query(2 * node + 1, mid + 1, h, s, e);
+//         return max(left , right);
+//     }
+//      int getIndx(int node,int val,int l,int h){
+//         if(segTree[node].value<val)return 0;
+//         if(l==h){
+//             return l;
+//         }
+//         int mid=(l+h)>>1;
+//         if(segTree[2*node].value>=val){
+//             return getIndx(2*node,val,l,mid);
+//         }
+//         else if(segTree[2*node+1].value>=val){
+//             return getIndx(2*node+1,val,mid+1,h);
+//         }
+        
+//             return 0;
+        
+//      }
+//     void update(int node, int indx, int val, int l, int h) {
+//         if (l == h) {
+//             segTree[node].value += val;
+//             return;
+//         }
+//         int mid = (l + h) >> 1;
+//         if (indx <= mid) {
+//             update(2 * node, indx, val, l, mid);
+//         } else {
+//             update(2 * node + 1, indx, val, mid + 1, h);
+//         }
+//         segTree[node].value = max(segTree[2 * node].value , segTree[2 * node + 1].value);
+//     }
+// };                   
